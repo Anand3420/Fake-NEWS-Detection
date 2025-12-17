@@ -14,11 +14,11 @@ st.set_page_config(page_title="Fake News Detection", layout="wide")
 # ===============================
 # LOAD MODEL, TF-IDF & ACCURACY
 # ===============================
-model = pickle.load(open("model.pkl", "rb"))
-tfidf = pickle.load(open("tfidf.pkl", "rb"))
+model = pickle.load(open("model\model.pkl", "rb"))
+tfidf = pickle.load(open("model\\tfidf.pkl", "rb"))
 
 try:
-    accuracy = pickle.load(open("accuracy.pkl", "rb"))
+    accuracy = pickle.load(open("model\accuracy.pkl", "rb"))
 except:
     accuracy = None
 

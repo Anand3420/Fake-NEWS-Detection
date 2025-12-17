@@ -12,12 +12,24 @@ from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, auc
 # ===============================
 # 1. LOAD DATASETS
 # ===============================
-bbc = pd.read_csv("bbc_news.csv", on_bad_lines="skip", engine="python")
-fake = pd.read_csv("Fake.csv", on_bad_lines="skip", engine="python")
+bbc = pd.read_csv("datasets\\bbc_news.csv", on_bad_lines="skip", engine="python")
+real = pd.read_csv("datasets\True.csv")
+fake = pd.read_csv("datasets\Fake.csv", on_bad_lines="skip", engine="python")
+
 
 # BBC → REAL (0)
 bbc["text"] = bbc["title"].fillna("") + " " + bbc["description"].fillna("")
 bbc["label"] = 0
+
+# REAL -> REAL(0)
+
+real["text"] = real["title"].fillna("") + " " + real["text"].fillna("")
+real["label"] = 0
+
+#combined dataset bbc + real 
+combined_dataset = pd.DataFrame()
+combined_dataset["text"] = pd.concat([bbc["text"], real["text"]])
+combined_dataset["label"] = pd.concat([bbc["label"], real["label"]])
 
 # Fake → FAKE (1)
 fake["label"] = 1
@@ -29,8 +41,8 @@ fake = fake[["text", "label"]].dropna()
 # 2. DATASET STATISTICS
 # ===============================
 stats = {
-    "Total Samples": len(bbc) + len(fake),
-    "Real News": len(bbc),
+    "Total Samples": len(combined_dataset) + len(fake),
+    "Real News": len(combined_dataset),
     "Fake News": len(fake)
 }
 
@@ -43,7 +55,7 @@ pickle.dump(stats, open("data_stats.pkl", "wb"))
 # ===============================
 # 3. COMBINE & SHUFFLE
 # ===============================
-data = pd.concat([bbc, fake], axis=0)
+data = pd.concat([combined_dataset, fake], axis=0)
 data = data.sample(frac=1, random_state=42).reset_index(drop=True)
 
 # ===============================
@@ -87,13 +99,13 @@ y_pred = model.predict(X_test_tfidf)
 accuracy = accuracy_score(y_test, y_pred)
 
 print(f"\n✅ MODEL ACCURACY: {accuracy*100:.2f}%")
-pickle.dump(accuracy, open("accuracy.pkl", "wb"))
+pickle.dump(accuracy, open(r"model\accuracy.pkl", "wb"))
 
 # ===============================
 # 8. CONFUSION MATRIX
 # ===============================
 cm = confusion_matrix(y_test, y_pred)
-pickle.dump(cm, open("confusion_matrix.pkl", "wb"))
+pickle.dump(cm, open(r"model\confusion_matrix.pkl", "wb"))
 
 plt.figure(figsize=(5, 4))
 plt.imshow(cm, cmap="Blues")
@@ -132,7 +144,7 @@ print("📈 roc_curve.png generated")
 # ===============================
 # 10. SAVE MODEL & VECTORIZER
 # ===============================
-pickle.dump(model, open("model.pkl", "wb"))
-pickle.dump(tfidf, open("tfidf.pkl", "wb"))
+pickle.dump(model, open(r"model\model.pkl", "wb"))
+pickle.dump(tfidf, open(r"model\tfidf.pkl", "wb"))
 
 print("\n✅ TRAINING COMPLETE — ALL FILES READY FOR app.py")

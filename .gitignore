@@ -1,0 +1,67 @@
+# ----------------------------
+# Virtual environments
+# ----------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ----------------------------
+# VS Code / Editor settings
+# ----------------------------
+.vscode/
+.idea/
+*.code-workspace
+
+# ----------------------------
+# Python cache / compiled files
+# ----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ----------------------------
+# OS generated files
+# ----------------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------------
+# Logs
+# ----------------------------
+*.log
+
+# ----------------------------
+# Jupyter / IPython
+# ----------------------------
+.ipynb_checkpoints/
+
+# ----------------------------
+# Generated ML artifacts (DO NOT COMMIT)
+# ----------------------------
+confusion_matrix.png
+roc_curve.png
+news.png.jpg
+
+data_stats.pkl
+roc_data.pkl
+*.pkl
+
+# ----------------------------
+# Environment variables
+# ----------------------------
+.env
+.env.*
+
+# ----------------------------
+# Temporary / backup files
+# ----------------------------
+*.tmp
+*.bak
+*.swp
+*~
+
+# ----------------------------
+# Local experiment files
+# ----------------------------
+practice.py
